@@ -104,7 +104,7 @@ void ESPCrashSave::setFilename(String filename) { _filename = filename; }
  * @brief   Get remaining space of filesystem
  * @return  Free space in byte
  */
-uint32_t ESPCrashSave::getFreeSpace() {
+uint32_t ESPCrashSave::getFSFreeSpace() {
   FSInfo fs_info;
 
   // fill FSInfo struct with informations about the SPIFFS

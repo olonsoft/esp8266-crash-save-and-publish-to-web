@@ -22,6 +22,9 @@ void setup(void) {
   if (crashSave.crashLogFileExists()) {
     crashSave.printCrashLog();
     crashSave.sendCrashLogToWeb(post_url, "1234");
+    if (crashSave.getFSFreeSpace() < 512) {
+      crashSave.clearCrashLog();
+    }
   }
 
   Serial.println();

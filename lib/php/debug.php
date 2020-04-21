@@ -7,11 +7,11 @@
   $mac = isset($_SERVER['HTTP_X_ESP_MAC']) ? $_SERVER['HTTP_X_ESP_MAC'] : $nul;
   $psw = isset($_REQUEST['psw']) ? $_REQUEST['psw'] : $nul;
     
-	if ($psw == $nul || $mac == $nul || $psw != "1234") {
-		echo "Wrong data.";
+  if ($psw == $nul || $mac == $nul || $psw != "1234") {
+    echo "Wrong data.";
     http_response_code(401);  //unauthorised
-		return false;  
-	}
+    return false;  
+  }
   
   $received = file_get_contents('php://input');
   $time = strftime("%Y-%m-%d %H:%M:%S", time());
