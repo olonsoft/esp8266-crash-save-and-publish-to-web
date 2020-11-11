@@ -1,5 +1,5 @@
 #include <ESPCrashSave.h>
-#include <FS.h>
+#include <LittleFS.h>
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -10,7 +10,7 @@
  * It should be kept quick / consise to be able to execute before hardware wdt
  * may kick in
  *
- * Without writing to SPIFFS this function take 2-3ms
+ * Without writing to LittleFS this function take 2-3ms
  * Writing to flash only takes 10-11ms.
  * This complete function should be finised in 15-20ms
  */
@@ -26,19 +26,19 @@ extern "C" void custom_crash_callback(struct rst_info* rst_info, uint32_t stack,
   uint8_t j;
 
   FSInfo fs_info;
-  // fill FSInfo struct with informations about the SPIFFS
-  SPIFFS.info(fs_info);
+  // fill FSInfo struct with informations about the LittleFS
+  LittleFS.info(fs_info);
   // if the remaining space is less than the length of the content to save
   uint32_t freeSpace = fs_info.totalBytes - fs_info.usedBytes;
   if (freeSpace < 512) return;  // todo
 
   // open the file in appending mode
-  File _file = SPIFFS.open(_filename, "a");
+  File _file = LittleFS.open(_filename, "a");
 
   // if the file does not yet exist
   if (!_file) {
     // open the file in write mode
-    _file = SPIFFS.open(_filename, "w");
+    _file = LittleFS.open(_filename, "w");
   }
 
   // if the file is (now) a valid file
@@ -95,7 +95,7 @@ extern "C" void custom_crash_callback(struct rst_info* rst_info, uint32_t stack,
 }
 
 ESPCrashSave::ESPCrashSave() {
-  SPIFFS.begin();
+  LittleFS.begin();
 }
 
 void ESPCrashSave::setFilename(String filename) { _filename = filename; }
@@ -107,14 +107,14 @@ void ESPCrashSave::setFilename(String filename) { _filename = filename; }
 uint32_t ESPCrashSave::getFSFreeSpace() {
   FSInfo fs_info;
 
-  // fill FSInfo struct with informations about the SPIFFS
-  SPIFFS.info(fs_info);
+  // fill FSInfo struct with informations about the LittleFS
+  LittleFS.info(fs_info);
 
   return (fs_info.totalBytes - (fs_info.usedBytes * 1.05));
 }
 
 bool ESPCrashSave::crashLogFileExists() {
-  return SPIFFS.exists(_filename);
+  return LittleFS.exists(_filename);
 }
 
 void ESPCrashSave::printCrashLog() {
@@ -124,7 +124,7 @@ void ESPCrashSave::printCrashLog() {
     return;
   };
 
-  File file = SPIFFS.open(_filename, "r");
+  File file = LittleFS.open(_filename, "r");
  
   if (!file) {
     Serial.println("Failed to open file for reading");
@@ -143,9 +143,9 @@ void ESPCrashSave::printCrashLog() {
  * @return  True is successful
  */
 bool ESPCrashSave::clearCrashLog() {
-  if (SPIFFS.exists(_filename)) {
+  if (LittleFS.exists(_filename)) {
     Serial.println("Deleting crash log file... ");
-    if (SPIFFS.remove(_filename)) {
+    if (LittleFS.remove(_filename)) {
       Serial.println("Success.");
       return true;
     } else {
@@ -169,7 +169,7 @@ bool ESPCrashSave::sendCrashLogToWeb(String url, String password) {
   http.addHeader("Content-Type", "multipart/form-data");  
   http.addHeader(F("X-ESP-MAC"), WiFi.macAddress());
     
-  File file = SPIFFS.open(_filename, "r");
+  File file = LittleFS.open(_filename, "r");
 
   if (!file) 
     return false;
