@@ -1,0 +1,22 @@
+{
+  "name": "Publish crash data to web",
+  "version": "1.0.0",
+  "keywords": "crash, debug, esp8266",
+  "description": "Upload ESP8266 crash debug info to web",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/olonsoft/esp8266-crash-save-and-publish-to-web.git"
+  },  
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": "espressif8266",
+  "authors": {
+      "name": "Dimitris Paterakis",
+      "email": "dimitris19@gmail.com",
+      "url": "http://paterakis.eu",
+      "maintainer": true
+  },
+  "examples": [
+      "examples/*/*.ino"
+  ]
+}
