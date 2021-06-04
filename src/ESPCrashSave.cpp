@@ -131,6 +131,8 @@ void ESPCrashSave::printCrashLog() {
     return;
   }
 
+  Serial.println("Printing Crash log:");
+
   while (file.available()) {
     Serial.write(file.read());
   }
@@ -158,7 +160,7 @@ bool ESPCrashSave::clearCrashLog() {
 
 //todo https://github.com/esp8266/Arduino/issues/1872 
 
-bool ESPCrashSave::sendCrashLogToWeb(String url, String password) {
+int ESPCrashSave::sendCrashLogToWeb(String url, String password) {
 
   String post_url = url + "?psw=" + password;
 

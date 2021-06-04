@@ -28,7 +28,7 @@ class ESPCrashSave {
   bool clearCrashLog();
   void printCrashLog();
   bool crashLogFileExists();
-  bool sendCrashLogToWeb(String url, String password);
+  int sendCrashLogToWeb(String url, String password);
   uint32_t getFSFreeSpace();
  private:  
   
