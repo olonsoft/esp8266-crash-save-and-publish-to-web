@@ -15,8 +15,8 @@
  *  6. epc3
  *  7. excvaddr
  *  8. depc
- *  9. adress of stack start
- * 10. adress of stack end
+ *  9. address of stack start
+ * 10. address of stack end
  * 11. stack trace bytes
  *      ...
  */
